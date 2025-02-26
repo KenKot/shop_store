@@ -4,10 +4,14 @@ public class WebUser {
 	private String password;
 	private UserState state;
 	
-	public WebUser(String login_id, String password) {
+	private Customer customer;
+	
+	public WebUser(String login_id, String password, Customer customer) {
 		this.loginId = login_id;
 		this.password = password;
 		this.state = UserState.New;
+
+		this.customer = customer;
 	}
 	
 	// GETTERS
@@ -33,4 +37,5 @@ public class WebUser {
 	public void setUserState(UserState newState) {
 		this.state = newState;
 	}
+	
 }
