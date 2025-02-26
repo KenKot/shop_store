@@ -18,9 +18,10 @@ public class Account {
 	private Set<Order> orders;
 	
 	
-	public Account(String street, String city, String state, String zip) {
+	public Account(Address address) {
 		this.id = String.valueOf(++count);
-		this.billing_address = new Address(street, city, state, zip);
+//		this.billing_address = new Address(street, city, state, zip);
+		this.billing_address = address;
 		this.is_closed = false;
 		this.open = LocalDateTime.now();
 		

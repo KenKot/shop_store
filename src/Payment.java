@@ -1,3 +1,4 @@
+import java.time.LocalDateTime;
 
 public class Payment {
 	private static int count = 0;
@@ -5,7 +6,7 @@ public class Payment {
 	private String id;
 	private LocalDateTime paid;
 	private float total;
-	String details String;
+	private String details;
 	
 	private Order order;
 	private Account account;

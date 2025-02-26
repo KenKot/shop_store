@@ -51,5 +51,13 @@ public class Customer {
 		this.webuser = new WebUser(login, pass, this);
 	}
 	
+	public Account getAccount() {
+		return this.account;
+	}
+	public void setAccount(Account newAccount) {
+		this.account = newAccount;
+		
+	}
+	
 	
 }

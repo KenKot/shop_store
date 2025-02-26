@@ -23,8 +23,8 @@ public class Order {
 		this.status = OrderStatus.PENDING;
 		this.total = total;
 		
-		this.payments = new HashSet<Payment>;
-		this.lineItems = new HashSet<LineItem>;
+		this.payments = new HashSet<Payment>();
+		this.lineitems = new HashSet<LineItem>();
 	}
 	
 	// GETTERS
@@ -43,7 +43,7 @@ public class Order {
 	public OrderStatus getstatus() {
 		return this.status;
 	}
-	public Address getTotal() {
+	public float getTotal() {
 		return this.total;
 	}
 
