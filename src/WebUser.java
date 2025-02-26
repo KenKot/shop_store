@@ -5,6 +5,7 @@ public class WebUser {
 	private UserState state;
 	
 	private Customer customer;
+	private ShoppingCart shoppingcart;
 	
 	public WebUser(String login_id, String password, Customer customer) {
 		this.loginId = login_id;
@@ -15,7 +16,6 @@ public class WebUser {
 	}
 	
 	// GETTERS
-	
 	public String getLoginId() {
 		return this.loginId;
 	}
@@ -25,7 +25,6 @@ public class WebUser {
 	}
 	
 	// SETTERS
-
 	public void setLoginId(String newId) {
 		this.loginId = newId;
 	}
@@ -36,6 +35,13 @@ public class WebUser {
 	
 	public void setUserState(UserState newState) {
 		this.state = newState;
+	}
+	
+	
+	// ASSOCIATIONS
+	
+	public void setShoppingCart(ShoppingCart cart) {
+		this.shoppingcart = cart;
 	}
 	
 }

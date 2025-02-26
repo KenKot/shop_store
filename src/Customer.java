@@ -18,7 +18,6 @@ public class Customer {
 	}
 	
 	// GETTERS
-	
 	public String getId() {
 		return this.id;
 	}
@@ -46,6 +45,8 @@ public class Customer {
 		this.email = newEmail;
 	}
 	
+	
+	// ASSOCIATIONS
 	public void addNewWebuser(String login, String pass) {
 		this.webuser = new WebUser(login, pass, this);
 	}
