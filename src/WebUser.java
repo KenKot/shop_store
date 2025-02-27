@@ -1,4 +1,3 @@
-
 public class WebUser {
 	private String loginId;
 	private String password;

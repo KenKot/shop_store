@@ -18,9 +18,9 @@ public class Account {
 	private Set<Order> orders;
 	
 	
-	public Account(String street, String city, String state, String zip ) {
+	public Account(Address address) {
 		this.id = String.valueOf(++count);
-		this.billing_address = new Address(street, city, state, zip);
+		this.billing_address = address;
 		this.is_closed = false;
 		this.open = LocalDateTime.now();
 		
@@ -39,14 +39,18 @@ public class Account {
 //		this.customer = customer;
 //	}
 	
-	public void setShoppingCart(ShoppingCart shoppingcart) {
-		this.shoppingcart = shoppingcart;
-	}
+//	public void setShoppingCart(ShoppingCart shoppingcart) {
+//		this.shoppingcart = shoppingcart;
+//	}
 	
 	public void addPayment(Payment payment) {
 		payments.add(payment);
 	}
 	public void addOrder(Order order) {
 		orders.add(order);
+	}
+	
+	public void createShoppingCart(WebUser webuser) {
+		this.shoppingcart = new ShoppingCart(webuser);
 	}
 }

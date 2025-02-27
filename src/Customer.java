@@ -1,4 +1,3 @@
-
 public class Customer {
 	private static int count = 0; // used for unique ID's
 	

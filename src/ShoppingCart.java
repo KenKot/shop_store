@@ -4,10 +4,13 @@ public class ShoppingCart {
 	private LocalDateTime createdAt;
 	
 	private WebUser webuser;
-	private Account account;
+//	private Account account;
 	
+//	public ShoppingCart(WebUser webuser, Account account) {
 	public ShoppingCart(WebUser webuser) {
 		this.createdAt = LocalDateTime.now();
+		this.webuser = webuser;
+//		this.account = account;
 	}
 	
 	// GETTERS
@@ -15,12 +18,15 @@ public class ShoppingCart {
 	// SETTERS
 	
 	// ASSOCIATIONS
+	public WebUser getWebUser() {
+		return this.webuser;
+	}
 	public void setWebUser(WebUser webuser) {
 		this.webuser = webuser;
 	}
 	
-	public void setAccount(Account account) {
-		this.account = account;
-	}
+//	public Account getAccount() {
+//		return this.account;
+//	}
 
 }
