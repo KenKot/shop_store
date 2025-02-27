@@ -1,4 +1,4 @@
 
 public enum UserState {
-	New, Active, Blocked, Banned;
+	NEW, ACTIVE, TEMP_BLOCKED, BANNED
 }

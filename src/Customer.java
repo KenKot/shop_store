@@ -10,9 +10,10 @@ public class Customer {
 	private WebUser webuser;
 	private Account account;
 	
-	public Customer(Address address, Phone phone, String email) {
+//	public Customer(Address address, Phone phone, String email) {
+	public Customer(String street, String city, String state, String zip , Phone phone, String email) {
 		this.id = String.valueOf(++count);
-		this.address = address;
+		this.address = new Address(street, city, state, zip);
 		this.phone = phone;
 		this.email = email;
 	}
@@ -47,17 +48,25 @@ public class Customer {
 	
 	
 	// ASSOCIATIONS
-	public void addNewWebuser(String login, String pass) {
-		this.webuser = new WebUser(login, pass, this);
+	public void setWebuser(WebUser webuser) {
+		this.webuser = webuser;
 	}
 	
 	public Account getAccount() {
 		return this.account;
 	}
-	public void setAccount(Account newAccount) {
-		this.account = newAccount;
-		
+//	public void setAccount(Account newAccount) {
+//		this.account = newAccount;
+//	}
+	public void createAccount(String street, String city, String state, String zip ) {
+		// "Account" as the parameter is nice
+		// to easily mirror the common setup
+		// of same shipping/billing address
+		Address address = new Address(street, city, state, zip);
+		this.account = new Account(address);
 	}
+	
+	
 	
 	
 }

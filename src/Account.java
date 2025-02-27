@@ -12,16 +12,15 @@ public class Account {
 	private LocalDateTime open;
 	private LocalDateTime closed;
 	
-	private Customer customer;
+//	private Customer customer;
 	private ShoppingCart shoppingcart;
 	private ArrayList<Payment> payments;
 	private Set<Order> orders;
 	
 	
-	public Account(Address address) {
+	public Account(String street, String city, String state, String zip ) {
 		this.id = String.valueOf(++count);
-//		this.billing_address = new Address(street, city, state, zip);
-		this.billing_address = address;
+		this.billing_address = new Address(street, city, state, zip);
 		this.is_closed = false;
 		this.open = LocalDateTime.now();
 		
@@ -36,9 +35,9 @@ public class Account {
 	// SETTERS
 	
 	// ASSOCIATIONS
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
+//	public void setCustomer(Customer customer) {
+//		this.customer = customer;
+//	}
 	
 	public void setShoppingCart(ShoppingCart shoppingcart) {
 		this.shoppingcart = shoppingcart;

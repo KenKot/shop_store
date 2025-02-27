@@ -7,11 +7,10 @@ public class WebUser {
 	private Customer customer;
 	private ShoppingCart shoppingcart;
 	
-	public WebUser(String login_id, String password, Customer customer) {
-		this.loginId = login_id;
+	public WebUser(String loginId, String password, Customer customer) {
+		this.loginId = loginId;
 		this.password = password;
-		this.state = UserState.New;
-
+		this.state = UserState.NEW;
 		this.customer = customer;
 	}
 	
@@ -39,7 +38,16 @@ public class WebUser {
 	
 	
 	// ASSOCIATIONS
-	
+	public Customer getCustomer() {
+		return this.customer;
+	}
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public ShoppingCart getShoppingCart() {
+		return this.shoppingcart;
+	}
 	public void setShoppingCart(ShoppingCart cart) {
 		this.shoppingcart = cart;
 	}
