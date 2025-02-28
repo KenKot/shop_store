@@ -3,31 +3,36 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Order {
+	private static int count = 0;
+	
 	private String number;
 	private LocalDateTime ordered;
 	private LocalDateTime shipped;
 	private Address shipTo;
 	private OrderStatus status;
-	private float total;
+	private double total;
 	
-	private Account account;
 	private Set<Payment> payments;
 	private Set<LineItem> lineitems;
 	
 	
-	public Order(String number, LocalDateTime ordered, LocalDateTime shipped, Address shipTo, float total ) {
-		this.number = number;
-		this.ordered = ordered;
-		this.shipped = shipped;
+	public Order(Address shipTo, Set<LineItem> lineitems) {
+		this.number = String.valueOf(++count);
+		
+		this.ordered = LocalDateTime.now();
 		this.shipTo = shipTo;
-		this.status = OrderStatus.PENDING;
-		this.total = total;
+		
+		this.lineitems = lineitems;
+		this.total = setTotal();
 		
 		this.payments = new HashSet<Payment>();
-		this.lineitems = new HashSet<LineItem>();
+		
+//		this.shipped = shipped; // to be updated later
+		this.status = OrderStatus.NEW; // to be updated later
 	}
 	
 	// GETTERS
+
 	public String getNumber() {
 		return this.number;
 	}
@@ -43,11 +48,19 @@ public class Order {
 	public OrderStatus getstatus() {
 		return this.status;
 	}
-	public float getTotal() {
+	public double getTotal() {
 		return this.total;
 	}
 
 	// SETTERS
+	private double setTotal() {
+		double total = 0.0;
+		for (LineItem item : this.lineitems) {
+			total +=  item.getPrice().getUSD();
+		}
+		return total;
+	}
+
 	public void setNumber(String number) {
 		this.number = number;
 	}
@@ -67,9 +80,9 @@ public class Order {
 		this.total = newTotal;
 	}
 	// ASSOCIATIONS
-	public void setAccount(Account account) {
-		this.account = account;
-	}
+//	public void setAccount(Account account) {
+//		this.account = account;
+//	}
 	
 	public void addPayment(Payment payment) {
 		this.payments.add(payment);

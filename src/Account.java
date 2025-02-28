@@ -31,6 +31,9 @@ public class Account {
 	
 	// GETTERS
 	
+	public String getId() {
+		return this.id;
+	}
 	
 	// SETTERS
 	
@@ -50,7 +53,7 @@ public class Account {
 		orders.add(order);
 	}
 	
-	public void createShoppingCart(WebUser webuser) {
-		this.shoppingcart = new ShoppingCart(webuser);
-	}
+//	public void createShoppingCart(WebUser webuser) {
+//		this.shoppingcart = new ShoppingCart(webuser);
+//	}
 }

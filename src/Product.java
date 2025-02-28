@@ -47,7 +47,7 @@ public class Product {
 	public ArrayList<LineItem> getLineItems(){
 		return this.lineitems;
 	}
-	public void setLineItem(LineItem lineitem) {
+	public void addLineItem(LineItem lineitem) {
 		this.lineitems.add(lineitem);
 		
 	}

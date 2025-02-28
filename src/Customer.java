@@ -9,7 +9,6 @@ public class Customer {
 	private WebUser webuser;
 	private Account account;
 	
-//	public Customer(Address address, Phone phone, String email) {
 	public Customer(String street, String city, String state, String zip , Phone phone, String email) {
 		this.id = String.valueOf(++count);
 		this.address = new Address(street, city, state, zip);
@@ -25,9 +24,11 @@ public class Customer {
 	public Address getAddress() {
 		return this.address;
 	}
+
 	public Phone getPhone() {
 		return this.phone;
 	}
+
 	public String getEmail() {
 		return this.email;
 	}
@@ -57,14 +58,15 @@ public class Customer {
 //	public void setAccount(Account newAccount) {
 //		this.account = newAccount;
 //	}
+
 	public void createAccount(String street, String city, String state, String zip ) {
-		// "Account" as the parameter is nice
-		// to easily mirror the common setup
-		// of same shipping/billing address
 		Address address = new Address(street, city, state, zip);
 		this.account = new Account(address);
 	}
-	
+	//Overloaded to use customer address as shipping address if no args given
+	public void createAccount() {
+		this.account = new Account(this.address);
+	}
 	
 	
 	

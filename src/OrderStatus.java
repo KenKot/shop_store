@@ -1,3 +1,3 @@
 public enum OrderStatus {
-		PENDING, SHIPPED, RETURNED
+	NEW, HOLD, SHIPPED, DELIVERED, CLOSED, PAID
 	}

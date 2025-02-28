@@ -1,11 +1,11 @@
 public class Price {
-	private float usd;
+	private double usd;
 	
-	public Price(float n){
+	public Price(double n){
 		this.usd = n;
 	}
 	
-	public float getPrice(){
+	public double getUSD(){
 		return this.usd;
 	}
 	

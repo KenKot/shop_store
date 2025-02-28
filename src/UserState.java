@@ -1,4 +1,3 @@
-
 public enum UserState {
-	NEW, ACTIVE, TEMP_BLOCKED, BANNED
+	NEW, ACTIVE, BLOCKED, BANNED
 }

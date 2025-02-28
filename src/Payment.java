@@ -5,21 +5,39 @@ public class Payment {
 	
 	private String id;
 	private LocalDateTime paid;
-	private float total;
+	private double total;
 	private String details;
 	
 	private Order order;
 	private Account account;
 	
-	public Payment(LocalDateTime ldt, float total, String details) {
+//	public Payment(LocalDateTime ldt, double total, String details) {
+	public Payment(double total, String details, Order order) {
 		this.id = String.valueOf(++count);
-		this.paid = ldt;
+		this.paid = LocalDateTime.now(); 
 		this.total = total;
-		this.details = details;		
+		this.details = details;
+		
+		this.order = order;
+
 	}
 	
 	// GETTERS
-	
+	public String getId() {
+		return this.id;
+	}
+
+	public LocalDateTime getPaid() {
+		return this.paid;
+	}
+
+	public double getTotal() {
+		return this.total;
+	}
+
+	public String getDetails() {
+		return this.details;
+	}
 	// SETTERS
 	
 	// ASSOCIATIONS
@@ -31,4 +49,7 @@ public class Payment {
 		this.account = account;
 	}
 	
+	public void setDetails(String details) {
+		this.details = details;
+	}
 }

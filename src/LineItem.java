@@ -22,6 +22,12 @@ public class LineItem {
 	}
 	
 	// SETTERS
+	public void decrementQuantity() {
+		if (this.quantity > 0) {
+			this.quantity--;
+		}
+	}
+	
 	public void setQuantity(int newQuantity) {
 		this.quantity = newQuantity;
 	}

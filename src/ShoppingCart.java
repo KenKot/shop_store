@@ -1,19 +1,31 @@
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ShoppingCart {
 	private LocalDateTime createdAt;
 	
 	private WebUser webuser;
-//	private Account account;
+	private Set<LineItem> lineitems;
 	
-//	public ShoppingCart(WebUser webuser, Account account) {
-	public ShoppingCart(WebUser webuser) {
+	public ShoppingCart() {
 		this.createdAt = LocalDateTime.now();
-		this.webuser = webuser;
-//		this.account = account;
+		this.lineitems = new HashSet<LineItem>();
 	}
 	
 	// GETTERS
+	public LocalDateTime getCreatedAt() {
+		return this.createdAt;
+	}
+
+	//moved to Order
+//	public double getTotal() {
+//		double total = 0.0;
+//		for (LineItem item : lineitems) {
+//			total += item.getQuantity() * item.getPrice().getUSD();
+//		}
+//		return total;
+//	}
 	
 	// SETTERS
 	
@@ -25,8 +37,11 @@ public class ShoppingCart {
 		this.webuser = webuser;
 	}
 	
-//	public Account getAccount() {
-//		return this.account;
-//	}
-
+	public void addLineItem(LineItem lineitem) {
+		lineitem.decrementQuantity();
+		lineitems.add(lineitem);
+	}
+	public Set<LineItem> getLineItems() {
+		return lineitems;
+	}
 }
