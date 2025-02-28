@@ -16,6 +16,10 @@ public class Order {
 	private Set<LineItem> lineitems;
 	
 	
+	// Programmer's Choice
+	private double balanceLeft;
+	
+	
 	public Order(Address shipTo, Set<LineItem> lineitems) {
 		this.number = String.valueOf(++count);
 		
@@ -24,6 +28,8 @@ public class Order {
 		
 		this.lineitems = lineitems;
 		this.total = setTotal();
+		this.balanceLeft = 0.0;
+		
 		
 		this.payments = new HashSet<Payment>();
 		
@@ -32,6 +38,14 @@ public class Order {
 	}
 	
 	// GETTERS
+		//programmers choice
+	public boolean isPaid() {
+		return this.balanceLeft <= 0;
+	}
+	public double getBalanceLeft() {
+		return this.balanceLeft;
+	}
+	
 
 	public String getNumber() {
 		return this.number;
@@ -39,13 +53,13 @@ public class Order {
 	public LocalDateTime getOrdered() {
 		return this.ordered;
 	}
-	public LocalDateTime getshipped() {
+	public LocalDateTime getShipped() {
 		return this.shipped;
 	}
-	public Address getshipTo() {
+	public Address getShipTo() {
 		return this.shipTo;
 	}
-	public OrderStatus getstatus() {
+	public OrderStatus getStatus() {
 		return this.status;
 	}
 	public double getTotal() {
@@ -85,7 +99,16 @@ public class Order {
 //	}
 	
 	public void addPayment(Payment payment) {
+		//prevent additional payments
+		if (this.isPaid()) return; 
+		
 		this.payments.add(payment);
+		this.balanceLeft -= payment.getTotal();
+
+		// no more payments needed
+		if (this.isPaid()) {
+			this.status = OrderStatus.PAID;
+		}
 	}
 	
 	

@@ -1,10 +1,6 @@
 
 public class Main {
 	public static void main(String[] args) {
-		System.out.println("HI");
-//		Address add1 = new Address("123 main st.", "Hayward", "CA", "12322");
-		
-//			
 		Customer c1 = new Customer("123 Main St.", "Hayward", "CA", "93128", new Phone("91231"),  "c1@gmail.com");		
 		c1.createAccount(); //Overloaded - when no address given it will use customer address for account address
 		Account c1Account = c1.getAccount();
@@ -32,6 +28,7 @@ public class Main {
 		System.out.println("quantity decrement check: " + GPUItem.getQuantity());
 		
 		Order o1 = new Order(c1.getAddress(), s1.getLineItems());
+		c1Account.addOrder(o1);
 		// reset the shopping cart from here?
 		System.out.println("Order total check: " + o1.getTotal());
 		
@@ -39,38 +36,18 @@ public class Main {
 		Payment p2 = new Payment(405.0, "credit card", o1);
 		o1.addPayment(p1);
 		o1.addPayment(p2);
+		c1Account.addPayment(p1);
+		c1Account.addPayment(p2);
+		
+		if (o1.getStatus() != OrderStatus.PAID) return;
+		
+		
+		// Now you can place a new order?
+		
 	    	
 //having Account do Payment would be nice for associations		
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-//		Customer c2 = new Customer(add1, p1, "c2@gmail.com");
-//		
-//		Account a1 = new Account(add1);
-//		Account a2 = new Account(add1);
-//
-//// Each customer has unique id and is linked to exactly one account. 		
-//		System.out.println("Each customer has unique id and is linked to exactly one account.");
-//		System.out.println("c1 id is: " + c1.getId());
-//		System.out.println("c2 id is: " + c2.getId());
-//				
-//		c1.setAccount(a1);
-//		c1.setAccount(a2);
-//		System.out.println("c1 only having 1 account despite trying to add 2: " + c1.getAccount());
-//		
-//		
-//		System.out.println("Program ended");
 	}
 }
