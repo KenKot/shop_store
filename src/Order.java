@@ -12,15 +12,15 @@ public class Order {
 	private OrderStatus status;
 	private double total;
 	
-	private Set<Payment> payments;
-	private Set<LineItem> lineitems;
+	private HashSet<Payment> payments;
+	private HashSet<LineItem> lineitems;
 	
 	
 	// Programmer's Choice
 	private double balanceLeft;
 	
 	
-	public Order(Address shipTo, Set<LineItem> lineitems) {
+	public Order(Address shipTo, HashSet<LineItem> lineitems) {
 		this.number = String.valueOf(++count);
 		
 		this.ordered = LocalDateTime.now();
@@ -28,7 +28,12 @@ public class Order {
 		
 		this.lineitems = lineitems;
 		this.total = setTotal();
+		
+		
 		this.balanceLeft = 0.0;
+		for (LineItem li : lineitems) {
+			this.balanceLeft += li.getPrice().getUSD();
+		}
 		
 		
 		this.payments = new HashSet<Payment>();
@@ -109,6 +114,10 @@ public class Order {
 		if (this.isPaid()) {
 			this.status = OrderStatus.PAID;
 		}
+	}
+	
+	public HashSet<Payment> getPayments(){
+		return this.payments;
 	}
 	
 	

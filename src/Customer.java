@@ -1,3 +1,5 @@
+import java.util.HashSet;
+
 public class Customer {
 	private static int count = 0; // used for unique ID's
 	
@@ -33,6 +35,12 @@ public class Customer {
 		return this.email;
 	}
 	
+	public HashSet<Order> getOrders() {
+		if (account != null) {
+			return account.getOrders();
+		}
+		return new HashSet<>();
+	}
 	// SETTERS
 	public void setAddress(Address newAddress) {
 		this.address = newAddress;

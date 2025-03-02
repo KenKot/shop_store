@@ -6,7 +6,7 @@ public class ShoppingCart {
 	private LocalDateTime createdAt;
 	
 	private WebUser webuser;
-	private Set<LineItem> lineitems;
+	private HashSet<LineItem> lineitems;
 	
 	public ShoppingCart() {
 		this.createdAt = LocalDateTime.now();
@@ -41,7 +41,7 @@ public class ShoppingCart {
 		lineitem.decrementQuantity();
 		lineitems.add(lineitem);
 	}
-	public Set<LineItem> getLineItems() {
+	public HashSet<LineItem> getLineItems() {
 		return lineitems;
 	}
 }

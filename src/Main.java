@@ -18,7 +18,7 @@ public class Main {
 		System.out.println("Running black box tests...\n");
 		
 		//TEST 1 - Customers have Unique Id's
-		tester("Customers have Unique Id's", )
+//		tester("Customers have Unique Id's", )
 		
 	}
 	
@@ -28,7 +28,6 @@ public class Main {
 		c1.createAccount(); //Overloaded - when no address given it will use customer address for account address
 		Account c1Account = c1.getAccount();
 		
-		System.out.println(c1Account.getId());
 		
 		tester("Customers have Unique Id's", c1.getId() != c2.getId());
 		tester("Customer has 1 account", c1.getAccount() instanceof Account);
@@ -36,6 +35,9 @@ public class Main {
 		WebUser w1 = new WebUser("john", "pass123", c1);
 		
 		tester("Customer can register as webuser", w1.getCustomer().getEmail() == "c1@gmail.com");
+		tester("Web user has login name", w1.getLoginId() == "john");
+		tester("Customer may have no orders", c1.getOrders().size() == 0);
+		
 		
 		
 		
@@ -72,6 +74,8 @@ public class Main {
 		o1.addPayment(p2);
 		c1Account.addPayment(p1);
 		c1Account.addPayment(p2);
+		
+		tester("Each order could refer to several payments, possibly none", o1.getPayments().size() > 1 );
 		
 		if (o1.getStatus() != OrderStatus.PAID) return;
 		

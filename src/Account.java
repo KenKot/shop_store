@@ -15,7 +15,7 @@ public class Account {
 //	private Customer customer;
 	private ShoppingCart shoppingcart;
 	private ArrayList<Payment> payments;
-	private Set<Order> orders;
+	private HashSet<Order> orders;
 	
 	
 	public Account(Address address) {
@@ -35,6 +35,9 @@ public class Account {
 		return this.id;
 	}
 	
+	public HashSet<Order> getOrders(){ 
+		return this.orders;
+	}
 	// SETTERS
 	
 	// ASSOCIATIONS
