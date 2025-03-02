@@ -1,9 +1,43 @@
 
 public class Main {
+	private static int testCount = 0;
+	
+
+    public static void tester(String testname, boolean evaluation) {
+    	String state;
+    	if (evaluation) {
+    		state = "passed";
+    	} else {
+    		state = "failed";
+    	}
+        System.out.println("Running test " + (++testCount) + ": " + testname + " -- test " + state);
+
+    }	
+
+	public static void runBlackBoxTests() {
+		System.out.println("Running black box tests...\n");
+		
+		//TEST 1 - Customers have Unique Id's
+		tester("Customers have Unique Id's", )
+		
+	}
+	
 	public static void main(String[] args) {
 		Customer c1 = new Customer("123 Main St.", "Hayward", "CA", "93128", new Phone("91231"),  "c1@gmail.com");		
+		Customer c2 = new Customer("123 Fake St.", "Seatle", "WA", "1318", new Phone("31231"),  "c2@gmail.com");		
 		c1.createAccount(); //Overloaded - when no address given it will use customer address for account address
 		Account c1Account = c1.getAccount();
+		
+		System.out.println(c1Account.getId());
+		
+		tester("Customers have Unique Id's", c1.getId() != c2.getId());
+		tester("Customer has 1 account", c1.getAccount() instanceof Account);
+		
+		WebUser w1 = new WebUser("john", "pass123", c1);
+		
+		tester("Customer can register as webuser", w1.getCustomer().getEmail() == "c1@gmail.com");
+		
+		
 		
 		Product GPU = new Product("6800 GT", new Supplier("EVGA"));
 		LineItem GPUItem = new LineItem(4, new Price(400.0));
