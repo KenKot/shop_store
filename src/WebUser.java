@@ -11,6 +11,7 @@ public class WebUser {
 		this.password = password;
 		this.state = UserState.NEW;
 		this.customer = customer;
+		this.shoppingcart = customer.getAccount().getShoppingCart();
 	}
 	
 	// GETTERS

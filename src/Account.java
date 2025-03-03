@@ -24,6 +24,9 @@ public class Account {
 		this.is_closed = false;
 		this.open = LocalDateTime.now();
 		
+		
+		this.shoppingcart = new ShoppingCart();
+		
 		this.payments = new ArrayList<Payment>();
 		this.orders = new HashSet<Order>();
 		
@@ -44,7 +47,10 @@ public class Account {
 //	public void setCustomer(Customer customer) {
 //		this.customer = customer;
 //	}
-	
+
+	public ShoppingCart getShoppingCart() {
+		return this.shoppingcart;
+	}
 //	public void setShoppingCart(ShoppingCart shoppingcart) {
 //		this.shoppingcart = shoppingcart;
 //	}
@@ -53,10 +59,13 @@ public class Account {
 		payments.add(payment);
 		payment.setAccount(this);
 	}
+
 	public void addOrder(Order order) {
 		orders.add(order);
 	}
-	
+//	public HashSet<Order> getOrders() {
+//		return this.orders;
+//	}
 //	public void createShoppingCart(WebUser webuser) {
 //		this.shoppingcart = new ShoppingCart(webuser);
 //	}
