@@ -8,7 +8,7 @@ public class Main {
     	if (evaluation) {
     		state = "passed";
     	} else {
-    		state = "failed";
+    		state = "failed!\n^\n|\n";
     	}
         System.out.println("Running test " + (++testCount) + ": " + testname + " -- test " + state);
 
@@ -46,7 +46,7 @@ public class Main {
 		GPUItem.setProduct(GPU);
 		GPU.addLineItem(GPUItem);
 		
-		
+
 		Product toothBrush = new Product("Brusher9000", new Supplier("Colgate"));
 		LineItem toothBrushItem = new LineItem(2, new Price(10.0));
 		toothBrushItem.setProduct(toothBrush);
@@ -76,14 +76,24 @@ public class Main {
 		c1Account.addPayment(p2);
 		
 		tester("Each order could refer to several payments, possibly none", o1.getPayments().size() > 1 );
+
+		tester("Every payment has unique id",p1.getId() != p2.getId());  
+
+		tester("Every payment has one account", p1.getAccount() instanceof Account);
+
+		tester("Every order has current order status", o1.getStatus() == OrderStatus.PAID);
+
+		tester("Each line item is related to 1 product", GPUItem.getProduct() instanceof Product && toothBrushItem.getProduct() instanceof Product);
+
+		tester("Each line item is related to 1 product", GPUItem.getProduct() instanceof Product && toothBrushItem.getProduct() instanceof Product);
 		
-		if (o1.getStatus() != OrderStatus.PAID) return;
 		
 		
-		// Now you can place a new order?
-		
-	    	
-//having Account do Payment would be nice for associations		
+		ShoppingCart s2 = new ShoppingCart();
+		LineItem GPUItem2 = new LineItem(11, new Price(400.0));
+		GPUItem2.setProduct(GPU);
+		s2.addLineItem(GPUItem2);
+		tester("Product could be associated w/ many line items, or none at all", GPU.getLineItems().size() > 1);
 		
 		
 		

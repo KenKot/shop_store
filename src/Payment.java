@@ -45,6 +45,9 @@ public class Payment {
 		this.order = order;
 	}
 	
+	public Account getAccount() {
+		return this.account;
+	}
 	public void setAccount(Account account) {
 		this.account = account;
 	}

@@ -51,6 +51,7 @@ public class Account {
 	
 	public void addPayment(Payment payment) {
 		payments.add(payment);
+		payment.setAccount(this);
 	}
 	public void addOrder(Order order) {
 		orders.add(order);
