@@ -100,7 +100,7 @@ public class Main {
 		
 		
 		
-		// Try and add the same order twice - breaking uniqueness
+		// Try and add the same order twice - it won't add as proven by same length
 		int c1OrderCount = c1.getAccount().getOrders().size();
 		c1Account.addOrder(o1);
 		tester("Customer Orders are unique", c1.getOrders().size() == c1OrderCount);
@@ -108,9 +108,19 @@ public class Main {
 		
 		
 		
+	
+		
 		tester("Customer Orders are sorted", c1.getOrders().size() == c1OrderCount);
 		
+		KenListPayment klp = new KenListPayment();
+		klp.addPayment(p2);
+		klp.addPayment(p1);
 		
+		Payment[] payments = klp.getPayments();
+		System.out.println(payments[0].getId());
+		System.out.println(payments[1].getId());
+//		System.out.println(payments[2]);
+		System.out.println(payments.length);
 		
 //		to do: Customer orders are sorted and unique
 	}
