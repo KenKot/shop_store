@@ -14,8 +14,11 @@ public class Account {
 	
 //	private Customer customer;
 	private ShoppingCart shoppingcart;
-	private ArrayList<Payment> payments;
-	private HashSet<Order> orders;
+	
+	private PaymentList payments;
+	private OrderList orders;
+//	private ArrayList<Payment> payments;
+//	private HashSet<Order> orders;
 	
 	
 	public Account(Address address) {
@@ -27,8 +30,10 @@ public class Account {
 		
 		this.shoppingcart = new ShoppingCart();
 		
-		this.payments = new ArrayList<Payment>();
-		this.orders = new HashSet<Order>();
+		this.payments = new PaymentList();
+		this.orders = new OrderList();
+//		this.payments = new ArrayList<Payment>();
+//		this.orders = new HashSet<Order>();
 		
 	}
 	
@@ -38,7 +43,8 @@ public class Account {
 		return this.id;
 	}
 	
-	public HashSet<Order> getOrders(){ 
+//	public HashSet<Order> getOrders(){ 
+	public OrderList getOrders(){ 
 		return this.orders;
 	}
 	// SETTERS

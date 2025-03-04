@@ -1,17 +1,17 @@
-public class KenListPayment {
+public class PaymentList {
     private int numPayments;
     private Payment[] paymentArray;
 
-    public KenListPayment() {
+    public PaymentList() {
         this.numPayments = 0;
-        this.paymentArray = new Payment[1];
+        this.paymentArray = new Payment[7];
     }
 
-    public void addPayment(Payment payment) {
+    public void add(Payment payment) {
         
         for (int i = 0; i < numPayments; ++i) {
             Payment curr = paymentArray[i];
-            if (payment.getId().equals(curr.getId())) {  // Fixed string comparison
+            if (payment.getId().equals(curr.getId())) {  
                 return;
             }
         }
@@ -35,7 +35,7 @@ public class KenListPayment {
         }
         
         for (int i = numPayments - 1; i >= 0; --i) {
-            if (payment.getId().compareTo(paymentArray[i].getId()) >= 0) {  // Fixed string comparison for sorting
+            if (payment.getId().compareTo(paymentArray[i].getId()) >= 0) { 
                 paymentArray[i + 1] = payment;
                 ++numPayments;
                 return;
@@ -50,6 +50,13 @@ public class KenListPayment {
         }
     }
 
+   public int size() {
+        return numPayments;
+    }
+
+    public Payment get(int index) {
+        return paymentArray[index];
+    }
     
     public Payment[] getPayments() {
     	return this.paymentArray;

@@ -12,15 +12,18 @@ public class Order {
 	private OrderStatus status;
 	private double total;
 	
-	private HashSet<Payment> payments;
-	private HashSet<LineItem> lineitems;
+	private PaymentList payments;
+	private LineItemList lineitems;
+	
+//	private HashSet<Payment> payments;
+//	private HashSet<LineItem> lineitems;
 	
 	
 	// Programmer's Choice
 	private double balanceLeft;
 	
 	
-	public Order(Address shipTo, HashSet<LineItem> lineitems) {
+	public Order(Address shipTo,  LineItemList lineitems) {
 		this.number = String.valueOf(++count);
 		
 		this.ordered = LocalDateTime.now();
@@ -31,12 +34,16 @@ public class Order {
 		
 		
 		this.balanceLeft = 0.0;
-		for (LineItem li : lineitems) {
-			this.balanceLeft += li.getPrice().getUSD();
+		
+		
+		
+		for (int i = 0; i < lineitems.size(); i++) {
+			this.balanceLeft += lineitems.get(i).getPrice().getUSD();
 		}
 		
 		
-		this.payments = new HashSet<Payment>();
+//		this.payments = new HashSet<Payment>();
+		this.payments = new PaymentList();
 		
 //		this.shipped = shipped; // to be updated later
 		this.status = OrderStatus.NEW; // to be updated later
@@ -52,7 +59,7 @@ public class Order {
 	}
 	
 
-	public String getNumber() {
+	public String getId() {
 		return this.number;
 	}
 	public LocalDateTime getOrdered() {
@@ -74,8 +81,9 @@ public class Order {
 	// SETTERS
 	private double setTotal() {
 		double total = 0.0;
-		for (LineItem item : this.lineitems) {
-			total +=  item.getPrice().getUSD();
+
+		for (int i = 0; i < lineitems.size(); i++) {
+			total += lineitems.get(i).getPrice().getUSD();
 		}
 		return total;
 	}
@@ -116,7 +124,8 @@ public class Order {
 		}
 	}
 	
-	public HashSet<Payment> getPayments(){
+//	public HashSet<Payment> getPayments(){
+	public PaymentList getPayments(){
 		return this.payments;
 	}
 	
@@ -124,7 +133,8 @@ public class Order {
 	public void addLineItem(LineItem lineitem) {
 		this.lineitems.add(lineitem);
 	}
-	public HashSet<LineItem> getLineItems() {
+//	public HashSet<LineItem> getLineItems() {
+	public LineItemList getLineItems() {
 		return this.lineitems;
 	}
 	

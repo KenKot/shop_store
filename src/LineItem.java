@@ -1,4 +1,7 @@
 public class LineItem {
+	private static int count = 0;
+	
+	private String id;
 	private int quantity;
 	private Price price;
 	
@@ -7,6 +10,7 @@ public class LineItem {
 	private Order order;
 	
 	public LineItem(int quantity, Price price) {
+		this.id = String.valueOf(++count);
 		this.quantity = quantity;
 		this.price = price;
 	}
@@ -17,6 +21,9 @@ public class LineItem {
 		return this.quantity;
 	}
 	
+	public String getId() {
+		return this.id;
+	}
 	public Price getPrice() {
 		return this.price;
 	}

@@ -106,22 +106,11 @@ public class Main {
 		tester("Customer Orders are unique", c1.getOrders().size() == c1OrderCount);
 
 		
+		OrderList ol = new OrderList();
+		ol.add(o2);
+		ol.add(o1);
 		
-		
-	
-		
-		tester("Customer Orders are sorted", c1.getOrders().size() == c1OrderCount);
-		
-		KenListPayment klp = new KenListPayment();
-		klp.addPayment(p2);
-		klp.addPayment(p1);
-		
-		Payment[] payments = klp.getPayments();
-		System.out.println(payments[0].getId());
-		System.out.println(payments[1].getId());
-//		System.out.println(payments[2]);
-		System.out.println(payments.length);
-		
-//		to do: Customer orders are sorted and unique
+		Order[] orders= ol.getOrders();
+		tester("Customer Orders are sorted", orders[0].getId().equals("1") && orders[1].getId().equals("2"));
 	}
 }

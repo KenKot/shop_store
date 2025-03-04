@@ -35,11 +35,13 @@ public class Customer {
 		return this.email;
 	}
 
-	public HashSet<Order> getOrders() {
+//	public HashSet<Order> getOrders() {
+	public OrderList getOrders() {
 		if (account != null) {
 			return account.getOrders();
 		}
-		return new HashSet<>();
+//		return new HashSet<>();
+		return new OrderList();
 	}
 
 	// SETTERS
