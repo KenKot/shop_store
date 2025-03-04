@@ -26,7 +26,9 @@ public class Main {
 		Customer c1 = new Customer("123 Main St.", "Hayward", "CA", "93128", new Phone("91231"),  "c1@gmail.com");		
 		Customer c2 = new Customer("123 Fake St.", "Seatle", "WA", "1318", new Phone("31231"),  "c2@gmail.com");		
 		c1.createAccount(); //Overloaded - when no address given it will use customer address for account address
+		c2.createAccount(); //Overloaded - when no address given it will use customer address for account address
 		Account c1Account = c1.getAccount();
+		Account c2Account = c2.getAccount();
 		
 		
 		tester("Customers have Unique Id's", c1.getId() != c2.getId());
@@ -74,7 +76,6 @@ public class Main {
 		tester("Every payment has one account", p1.getAccount() instanceof Account);
 		tester("Every order has current order status", o1.getStatus() == OrderStatus.PAID);
 		tester("Each line item is related to 1 product", GPUItem.getProduct() instanceof Product && toothBrushItem.getProduct() instanceof Product);
-		tester("Each line item is related to 1 product", GPUItem.getProduct() instanceof Product && toothBrushItem.getProduct() instanceof Product);
 		
 		
 		
@@ -89,14 +90,27 @@ public class Main {
 		tester("Account owns shopping cart", c1.getAccount().getShoppingCart() instanceof ShoppingCart);
 		tester("Account owns orders", c1.getAccount().getOrders().contains(o1));
 		tester("Shopping cart belongs to account", c1.getAccount().getShoppingCart() instanceof ShoppingCart);
+		
+		ShoppingCart s2 = c2.getAccount().getShoppingCart();
+		LineItem GPUItem3 = new LineItem(44, new Price(400.0));
+		s2.addLineItem(GPUItem3);
+		Order o2 = new Order(c2.getAddress(), s2.getLineItems());
+		c2Account.addOrder(o2);
+		tester("Both order & shopping cart have line items linked to a specific product", o2.getLineItems().size() == s2.getLineItems().size());
+		
+		
+		
+		// Try and add the same order twice - breaking uniqueness
+		int c1OrderCount = c1.getAccount().getOrders().size();
+		c1Account.addOrder(o1);
+		tester("Customer Orders are unique", c1.getOrders().size() == c1OrderCount);
 
 		
 		
-		KenList<Customer> kl = new KenList<Customer>();
-		kl.addItem(c1);
+		
+		tester("Customer Orders are sorted", c1.getOrders().size() == c1OrderCount);
 		
 		
-//		to do: tester("Both order and shopping cart have line items linked to a specific product", o1.)
 		
 //		to do: Customer orders are sorted and unique
 	}

@@ -124,6 +124,8 @@ public class Order {
 	public void addLineItem(LineItem lineitem) {
 		this.lineitems.add(lineitem);
 	}
-	
+	public HashSet<LineItem> getLineItems() {
+		return this.lineitems;
+	}
 	
 }
