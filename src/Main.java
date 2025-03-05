@@ -137,6 +137,23 @@ public class Main {
 		LineItem li1 = new LineItem(3, new Price(400));
 		LineItem li2 = new LineItem(4, new Price(800));
 		LineItem li3 = new LineItem(2, new Price(1400));
+		Product Soda = new Product("Dr. Pepper", new Supplier("Pepsico"));
+		li1.setProduct(Soda);
+		Product Cheese = new Product("Cheddar", new Supplier("Kraft"));
+		li1.setProduct(Cheese);
+		
+		li1.setShoppingCart(s2);
+		li1.setOrder(o2);
+		
+//		LineItemList lil = new LineItemList();
+//		lil.add(Soda);
+//		lil.add(Cheese)
+//		
+//		s1.addLineItem(Soda);
+//		s1.addLineItem(Cheese);
+		
+		
+		
 		tester("ID's are unique & set in constructor", li1.getId().equals("5") && li2.getId().equals("6") && li3.getId().equals("7"));
 
 		tester("Line Item has a number quantity", li1.getQuantity() >= 0);
@@ -162,8 +179,9 @@ public class Main {
 		li3.setPrice(new Price(999));
 		tester("can set price", li3.getPrice().getUSD() == 999);
 		
-//		tester("", );
-//		tester("", );
+		tester("Line item associated with a product", li1.getProduct() instanceof Product);
+		tester("Line item associated with a shopping cart", li1.getShoppingCart() instanceof ShoppingCart);
+		tester("Line item associated with a order", li1.getOrder() instanceof Order);
 //		tester("", );
 	}
 }
