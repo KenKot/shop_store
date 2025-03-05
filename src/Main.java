@@ -14,15 +14,11 @@ public class Main {
 
     }	
 
-	public static void runBlackBoxTests() {
-		System.out.println("Running black box tests...\n");
-		
-		//TEST 1 - Customers have Unique Id's
-//		tester("Customers have Unique Id's", )
-		
-	}
 	
 	public static void main(String[] args) {
+		System.out.println("------------------------------------------------------------");
+		System.out.println("RUNNING BLACK BOX TESTS:");
+		System.out.println("------------------------------------------------------------");
 		Customer c1 = new Customer("123 Main St.", "Hayward", "CA", "93128", new Phone("91231"),  "c1@gmail.com");		
 		Customer c2 = new Customer("123 Fake St.", "Seatle", "WA", "1318", new Phone("31231"),  "c2@gmail.com");		
 		c1.createAccount(); //Overloaded - when no address given it will use customer address for account address
@@ -33,7 +29,7 @@ public class Main {
 		
 		tester("Customers have Unique Id's", c1.getId() != c2.getId());
 		tester("Customer has 1 account", c1.getAccount() instanceof Account);
-		
+		tester("Customer can exist without WebUser", c2.getWebuser() == null);
 		WebUser w1 = new WebUser("john", "pass123", c1);
 		
 		tester("Customer can register as webuser", w1.getCustomer().getEmail() == "c1@gmail.com");
@@ -64,6 +60,8 @@ public class Main {
 		Order o1 = new Order(c1.getAddress(), s1.getLineItems());
 		c1Account.addOrder(o1);
 		
+		tester("Order could refer to no payments", o1.getPayments().size() == 0 );
+
 		Payment p1 = new Payment(5.0, "giftcard", o1); // have constructor do "o1.AddPayment() for association" ???
 		Payment p2 = new Payment(405.0, "credit card", o1);
 		o1.addPayment(p1);
@@ -71,7 +69,7 @@ public class Main {
 		c1Account.addPayment(p1);
 		c1Account.addPayment(p2);
 		
-		tester("Each order could refer to several payments, possibly none", o1.getPayments().size() > 1 );
+		tester("Each order could refer to several payments", o1.getPayments().size() > 1 );
 		tester("Every payment has unique id",p1.getId() != p2.getId());  
 		tester("Every payment has one account", p1.getAccount() instanceof Account);
 		tester("Every order has current order status", o1.getStatus() == OrderStatus.PAID);
@@ -112,5 +110,60 @@ public class Main {
 		
 		Order[] orders= ol.getOrders();
 		tester("Customer Orders are sorted", orders[0].getId().equals("1") && orders[1].getId().equals("2"));
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		System.out.println("\n\n------------------------------------------------------------");
+		System.out.println("RUNNING WHITE BOX TESTING ON THE CLASS LineItem");
+		System.out.println("------------------------------------------------------------");
+		LineItem li1 = new LineItem(3, new Price(400));
+		LineItem li2 = new LineItem(4, new Price(800));
+		LineItem li3 = new LineItem(2, new Price(1400));
+		tester("ID's are unique & set in constructor", li1.getId().equals("5") && li2.getId().equals("6") && li3.getId().equals("7"));
+
+		tester("Line Item has a number quantity", li1.getQuantity() >= 0);
+
+		tester("Line Item has a price (which also has a usd value)", li1.getPrice() instanceof Price && li1.getPrice().getUSD() >= 0);
+		
+		
+		int initCount = li3.getQuantity();
+		li3.decrementQuantity();
+		tester("line item can decrement in quanitity", initCount - 1 ==  li3.getQuantity());
+		
+		
+		li3.decrementQuantity();
+		li3.decrementQuantity();
+		li3.decrementQuantity();
+		li3.decrementQuantity();
+		li3.decrementQuantity();
+		tester("line item can't decrement past 0", li3.getQuantity() >= 0);
+
+		li3.setQuantity(111);
+		tester("Can set quantity", li3.getQuantity() == 111);
+		
+		li3.setPrice(new Price(999));
+		tester("can set price", li3.getPrice().getUSD() == 999);
+		
+//		tester("", );
+//		tester("", );
+//		tester("", );
 	}
 }

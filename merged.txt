@@ -1,0 +1,987 @@
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.ArrayList;
+
+public class Account {
+	private static int count = 0;
+	
+	private String id;
+	private Address billing_address; // perhaps make setter, not use constructor
+	private boolean is_closed;
+	private LocalDateTime open;
+	private LocalDateTime closed;
+	
+//	private Customer customer;
+	private ShoppingCart shoppingcart;
+	
+	private PaymentList payments;
+	private OrderList orders;
+//	private ArrayList<Payment> payments;
+//	private HashSet<Order> orders;
+	
+	
+	public Account(Address address) {
+		this.id = String.valueOf(++count);
+		this.billing_address = address;
+		this.is_closed = false;
+		this.open = LocalDateTime.now();
+		
+		
+		this.shoppingcart = new ShoppingCart();
+		
+		this.payments = new PaymentList();
+		this.orders = new OrderList();
+//		this.payments = new ArrayList<Payment>();
+//		this.orders = new HashSet<Order>();
+		
+	}
+	
+	// GETTERS
+	
+	public String getId() {
+		return this.id;
+	}
+	
+//	public HashSet<Order> getOrders(){ 
+	public OrderList getOrders(){ 
+		return this.orders;
+	}
+	// SETTERS
+	
+	// ASSOCIATIONS
+//	public void setCustomer(Customer customer) {
+//		this.customer = customer;
+//	}
+
+	public ShoppingCart getShoppingCart() {
+		return this.shoppingcart;
+	}
+//	public void setShoppingCart(ShoppingCart shoppingcart) {
+//		this.shoppingcart = shoppingcart;
+//	}
+	
+	public void addPayment(Payment payment) {
+		payments.add(payment);
+		payment.setAccount(this);
+	}
+
+	public void addOrder(Order order) {
+		orders.add(order);
+	}
+//	public HashSet<Order> getOrders() {
+//		return this.orders;
+//	}
+//	public void createShoppingCart(WebUser webuser) {
+//		this.shoppingcart = new ShoppingCart(webuser);
+//	}
+}
+public class Address {
+	private String street;
+	private String city;
+	private String state;
+	private String zip;
+	
+	public Address(String street, String city, String state, String zip) {
+		this.street = street;
+		this.city = city;
+		this.state = state;
+		this.zip = zip;
+	}
+	
+	public String getAddress() {
+		return this.street + "\n" + this.city + ", " + this.state + " " + this.zip;
+	}
+}
+import java.util.HashSet;
+
+public class Customer {
+	private static int count = 0; // used for unique ID's
+
+	private String id;
+	private Address address;
+	private Phone phone;
+	private String email;
+
+	private WebUser webuser;
+	private Account account;
+
+	public Customer(String street, String city, String state, String zip, Phone phone, String email) {
+		this.id = String.valueOf(++count);
+		this.address = new Address(street, city, state, zip);
+		this.phone = phone;
+		this.email = email;
+	}
+
+	// GETTERS
+	public String getId() {
+		return this.id;
+	}
+
+	public Address getAddress() {
+		return this.address;
+	}
+
+	public Phone getPhone() {
+		return this.phone;
+	}
+
+	public String getEmail() {
+		return this.email;
+	}
+
+//	public HashSet<Order> getOrders() {
+	public OrderList getOrders() {
+		if (account != null) {
+			return account.getOrders();
+		}
+//		return new HashSet<>();
+		return new OrderList();
+	}
+
+	// SETTERS
+	public void setAddress(Address newAddress) {
+		this.address = newAddress;
+	}
+
+	public void setPhone(Phone newPhone) {
+		this.phone = newPhone;
+	}
+
+	public void setEmail(String newEmail) {
+		this.email = newEmail;
+	}
+
+	// ASSOCIATIONS
+	public void setWebuser(WebUser webuser) {
+		this.webuser = webuser;
+	}
+	public WebUser getWebuser() {
+		return this.webuser;
+	}
+	public Account getAccount() {
+		return this.account;
+	}
+//	public void setAccount(Account newAccount) {
+//		this.account = newAccount;
+//	}
+
+	public void createAccount(String street, String city, String state, String zip) {
+		Address address = new Address(street, city, state, zip);
+		this.account = new Account(address);
+	}
+
+	// Overloaded to use customer address as shipping address if no args given
+	public void createAccount() {
+		this.account = new Account(this.address);
+	}
+
+}
+public class LineItem {
+	private static int count = 0;
+	
+	private String id;
+	private int quantity;
+	private Price price;
+	
+	private Product product;
+	private ShoppingCart shoppingcart;
+	private Order order;
+	
+	public LineItem(int quantity, Price price) {
+		this.id = String.valueOf(++count);
+		this.quantity = quantity;
+		this.price = price;
+	}
+	
+	
+	// GETTERS
+	public int getQuantity() {
+		return this.quantity;
+	}
+	
+	public String getId() {
+		return this.id;
+	}
+	public Price getPrice() {
+		return this.price;
+	}
+	
+	// SETTERS
+	public void decrementQuantity() {
+		if (this.quantity > 0) {
+			this.quantity--;
+		}
+	}
+	
+	public void setQuantity(int newQuantity) {
+		this.quantity = newQuantity;
+	}
+	
+	public void setPrice(Price newPrice) {
+		this.price = newPrice;
+	}
+	
+	
+	// ASSOCIATIONS
+	public Product getProduct() {
+		return this.product;
+	}
+	public void setProduct(Product product) {
+		this.product = product;
+		product.addLineItem(this);
+	}
+	
+	public void setShoppingCart(ShoppingCart shoppingcart) {
+		this.shoppingcart = shoppingcart;
+	}
+	
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+}
+public class LineItemList {
+    private int numLineItems;
+    private LineItem[] lineItemArray;
+
+    public LineItemList() {
+        this.numLineItems = 0;
+        this.lineItemArray = new LineItem[7];
+    }
+
+    public void add(LineItem lineItem) {
+        
+        for (int i = 0; i < numLineItems; ++i) {
+            LineItem curr = lineItemArray[i];
+            if (lineItem.getId().equals(curr.getId())) {  
+                return;
+            }
+        }
+        
+		if (this.numLineItems >= lineItemArray.length) {
+			LineItem[] newLineItemArray = new LineItem[lineItemArray.length * 2];
+
+			// Copy old array into new/bigger array
+			for (int i = 0; i < lineItemArray.length; ++i) {
+				newLineItemArray[i] = lineItemArray[i];
+			}
+
+			lineItemArray = newLineItemArray;
+		}
+        
+        
+        if (numLineItems == 0) {
+            lineItemArray[0] = lineItem;
+            ++numLineItems;
+            return;
+        }
+        
+        for (int i = numLineItems - 1; i >= 0; --i) {
+            if (lineItem.getId().compareTo(lineItemArray[i].getId()) >= 0) { 
+                lineItemArray[i + 1] = lineItem;
+                ++numLineItems;
+                return;
+            } else {
+                lineItemArray[i + 1] = lineItemArray[i];
+                if (i == 0) {
+                    lineItemArray[0] = lineItem;
+                    ++numLineItems;
+                    return;
+                }
+            }
+        }
+    }
+   public int size() {
+        return numLineItems;
+    }
+
+    public LineItem get(int index) {
+        return lineItemArray[index];
+    }
+    
+    public LineItem[] getLineItems() {
+    	return this.lineItemArray;
+    }
+}
+
+public class Main {
+	private static int testCount = 0;
+	
+
+    public static void tester(String testname, boolean evaluation) {
+    	String state;
+    	if (evaluation) {
+    		state = "passed";
+    	} else {
+    		state = "failed!\n^\n|\n";
+    	}
+        System.out.println("Running test " + (++testCount) + ": " + testname + " -- test " + state);
+
+    }	
+
+	
+	public static void main(String[] args) {
+		System.out.println("------------------------------------------------------------");
+		System.out.println("RUNNING BLACK BOX TESTS:");
+		System.out.println("------------------------------------------------------------");
+		Customer c1 = new Customer("123 Main St.", "Hayward", "CA", "93128", new Phone("91231"),  "c1@gmail.com");		
+		Customer c2 = new Customer("123 Fake St.", "Seatle", "WA", "1318", new Phone("31231"),  "c2@gmail.com");		
+		c1.createAccount(); //Overloaded - when no address given it will use customer address for account address
+		c2.createAccount(); //Overloaded - when no address given it will use customer address for account address
+		Account c1Account = c1.getAccount();
+		Account c2Account = c2.getAccount();
+		
+		
+		tester("Customers have Unique Id's", c1.getId() != c2.getId());
+		tester("Customer has 1 account", c1.getAccount() instanceof Account);
+		tester("Customer can exist without WebUser", c2.getWebuser() == null);
+		WebUser w1 = new WebUser("john", "pass123", c1);
+		
+		tester("Customer can register as webuser", w1.getCustomer().getEmail() == "c1@gmail.com");
+		tester("Web user has login name", w1.getLoginId() == "john");
+		tester("Customer may have no orders", c1.getOrders().size() == 0);
+		
+		
+		w1.setUserState(UserState.ACTIVE);
+		tester("Web user can be in several states", w1.getUserState() == UserState.ACTIVE);
+		tester("Web user linked to a shopping cart", w1.getShoppingCart() instanceof ShoppingCart);
+		
+		
+		Product GPU = new Product("6800 GT", new Supplier("EVGA"));
+		LineItem GPUItem = new LineItem(4, new Price(400.0));
+		GPUItem.setProduct(GPU);
+		GPU.addLineItem(GPUItem);
+		
+
+		Product toothBrush = new Product("Brusher9000", new Supplier("Colgate"));
+		LineItem toothBrushItem = new LineItem(2, new Price(10.0));
+		toothBrushItem.setProduct(toothBrush);
+		toothBrush.addLineItem(toothBrushItem);
+
+		ShoppingCart s1 = c1.getAccount().getShoppingCart();
+		s1.addLineItem(GPUItem);
+		s1.addLineItem(toothBrushItem);
+		
+		Order o1 = new Order(c1.getAddress(), s1.getLineItems());
+		c1Account.addOrder(o1);
+		
+		tester("Order could refer to no payments", o1.getPayments().size() == 0 );
+
+		Payment p1 = new Payment(5.0, "giftcard", o1); // have constructor do "o1.AddPayment() for association" ???
+		Payment p2 = new Payment(405.0, "credit card", o1);
+		o1.addPayment(p1);
+		o1.addPayment(p2);
+		c1Account.addPayment(p1);
+		c1Account.addPayment(p2);
+		
+		tester("Each order could refer to several payments", o1.getPayments().size() > 1 );
+		tester("Every payment has unique id",p1.getId() != p2.getId());  
+		tester("Every payment has one account", p1.getAccount() instanceof Account);
+		tester("Every order has current order status", o1.getStatus() == OrderStatus.PAID);
+		tester("Each line item is related to 1 product", GPUItem.getProduct() instanceof Product && toothBrushItem.getProduct() instanceof Product);
+		
+		
+		
+//		ShoppingCart s2 = new ShoppingCart();
+		LineItem GPUItem2 = new LineItem(11, new Price(400.0));
+		GPUItem2.setProduct(GPU);
+		s1.addLineItem(GPUItem2);
+		tester("Product could be associated w/ many line items, or none at all", GPU.getLineItems().size() > 1);
+		
+		
+		
+		tester("Account owns shopping cart", c1.getAccount().getShoppingCart() instanceof ShoppingCart);
+		tester("Account owns orders", c1.getAccount().getOrders().contains(o1));
+		tester("Shopping cart belongs to account", c1.getAccount().getShoppingCart() instanceof ShoppingCart);
+		
+		ShoppingCart s2 = c2.getAccount().getShoppingCart();
+		LineItem GPUItem3 = new LineItem(44, new Price(400.0));
+		s2.addLineItem(GPUItem3);
+		Order o2 = new Order(c2.getAddress(), s2.getLineItems());
+		c2Account.addOrder(o2);
+		tester("Both order & shopping cart have line items linked to a specific product", o2.getLineItems().size() == s2.getLineItems().size());
+		
+		
+		
+		// Try and add the same order twice - it won't add as proven by same length
+		int c1OrderCount = c1.getAccount().getOrders().size();
+		c1Account.addOrder(o1);
+		tester("Customer Orders are unique", c1.getOrders().size() == c1OrderCount);
+
+		
+		OrderList ol = new OrderList();
+		ol.add(o2);
+		ol.add(o1);
+		
+		Order[] orders= ol.getOrders();
+		tester("Customer Orders are sorted", orders[0].getId().equals("1") && orders[1].getId().equals("2"));
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		System.out.println("\n\n------------------------------------------------------------");
+		System.out.println("RUNNING BLACK BOX TESTS:");
+		System.out.println("------------------------------------------------------------");
+	}
+}
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
+public class Order {
+	private static int count = 0;
+	
+	private String number;
+	private LocalDateTime ordered;
+	private LocalDateTime shipped;
+	private Address shipTo;
+	private OrderStatus status;
+	private double total;
+	
+	private PaymentList payments;
+	private LineItemList lineitems;
+	
+//	private HashSet<Payment> payments;
+//	private HashSet<LineItem> lineitems;
+	
+	
+	// Programmer's Choice
+	private double balanceLeft;
+	
+	
+	public Order(Address shipTo,  LineItemList lineitems) {
+		this.number = String.valueOf(++count);
+		
+		this.ordered = LocalDateTime.now();
+		this.shipTo = shipTo;
+		
+		this.lineitems = lineitems;
+		this.total = setTotal();
+		
+		
+		this.balanceLeft = 0.0;
+		
+		
+		
+		for (int i = 0; i < lineitems.size(); i++) {
+			this.balanceLeft += lineitems.get(i).getPrice().getUSD();
+		}
+		
+		
+//		this.payments = new HashSet<Payment>();
+		this.payments = new PaymentList();
+		
+//		this.shipped = shipped; // to be updated later
+		this.status = OrderStatus.NEW; // to be updated later
+	}
+	
+	// GETTERS
+		//programmers choice
+	public boolean isPaid() {
+		return this.balanceLeft <= 0;
+	}
+	public double getBalanceLeft() {
+		return this.balanceLeft;
+	}
+	
+
+	public String getId() {
+		return this.number;
+	}
+	public LocalDateTime getOrdered() {
+		return this.ordered;
+	}
+	public LocalDateTime getShipped() {
+		return this.shipped;
+	}
+	public Address getShipTo() {
+		return this.shipTo;
+	}
+	public OrderStatus getStatus() {
+		return this.status;
+	}
+	public double getTotal() {
+		return this.total;
+	}
+
+	// SETTERS
+	private double setTotal() {
+		double total = 0.0;
+
+		for (int i = 0; i < lineitems.size(); i++) {
+			total += lineitems.get(i).getPrice().getUSD();
+		}
+		return total;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+	public void setOrdered(LocalDateTime newDate) {
+		this.ordered = newDate;
+	}
+	public void setshipped(LocalDateTime newDate) {
+		this.shipped = newDate;
+	}
+	public void setshipTo(Address newAddress) {
+		this.shipTo = newAddress;
+	}
+	public void setStatus(OrderStatus newStatus) {
+		this.status = newStatus;
+	}
+	public void setTotal(float newTotal) {
+		this.total = newTotal;
+	}
+	// ASSOCIATIONS
+//	public void setAccount(Account account) {
+//		this.account = account;
+//	}
+	
+	public void addPayment(Payment payment) {
+		//prevent additional payments
+		if (this.isPaid()) return; 
+		
+		this.payments.add(payment);
+		this.balanceLeft -= payment.getTotal();
+
+		// no more payments needed
+		if (this.isPaid()) {
+			this.status = OrderStatus.PAID;
+		}
+	}
+	
+//	public HashSet<Payment> getPayments(){
+	public PaymentList getPayments(){
+		return this.payments;
+	}
+	
+	
+	public void addLineItem(LineItem lineitem) {
+		this.lineitems.add(lineitem);
+	}
+//	public HashSet<LineItem> getLineItems() {
+	public LineItemList getLineItems() {
+		return this.lineitems;
+	}
+	
+}
+public class OrderList {
+    private int numOrders;
+    private Order[] orderArray;
+
+    public OrderList() {
+        this.numOrders = 0;
+        this.orderArray = new Order[7];
+    }
+
+    public void add(Order order) {
+        
+        for (int i = 0; i < numOrders; ++i) {
+            Order curr = orderArray[i];
+            if (order.getId().equals(curr.getId())) {  
+                return;
+            }
+        }
+        
+		if (this.numOrders >= orderArray.length) {
+			Order[] newOrderArray = new Order[orderArray.length * 2];
+
+			// Copy old array into new/bigger array
+			for (int i = 0; i < orderArray.length; ++i) {
+				newOrderArray[i] = orderArray[i];
+			}
+
+			orderArray = newOrderArray;
+		}
+        
+        
+        if (numOrders == 0) {
+            orderArray[0] = order;
+            ++numOrders;
+            return;
+        }
+        
+        for (int i = numOrders - 1; i >= 0; --i) {
+            if (order.getId().compareTo(orderArray[i].getId()) >= 0) { 
+                orderArray[i + 1] = order;
+                ++numOrders;
+                return;
+            } else {
+                orderArray[i + 1] = orderArray[i];
+                if (i == 0) {
+                    orderArray[0] = order;
+                    ++numOrders;
+                    return;
+                }
+            }
+        }
+    }
+
+   	public boolean contains(Order order) {
+   		for (int i = 0; i < numOrders; i++) {
+   			if (orderArray[i].getId().equals(order.getId())) { 
+   				return true; 
+   			}
+   		}
+   		return false; 
+   	}
+
+   	
+   public int size() {
+        return numOrders;
+    }
+
+    public Order get(int index) {
+        return orderArray[index];
+    }
+    public Order[] getOrders() {
+    	return this.orderArray;
+    }
+}
+public enum OrderStatus {
+	NEW, HOLD, SHIPPED, DELIVERED, CLOSED, PAID
+	}
+import java.time.LocalDateTime;
+
+public class Payment {
+	private static int count = 0;
+	
+	private String id;
+	private LocalDateTime paid;
+	private double total;
+	private String details;
+	
+	private Order order;
+	private Account account;
+	
+//	public Payment(LocalDateTime ldt, double total, String details) {
+	public Payment(double total, String details, Order order) {
+		this.id = String.valueOf(++count);
+		this.paid = LocalDateTime.now(); 
+		this.total = total;
+		this.details = details;
+		
+		this.order = order;
+
+	}
+	
+	// GETTERS
+	public String getId() {
+		return this.id;
+	}
+
+	public LocalDateTime getPaid() {
+		return this.paid;
+	}
+
+	public double getTotal() {
+		return this.total;
+	}
+
+	public String getDetails() {
+		return this.details;
+	}
+	// SETTERS
+	
+	// ASSOCIATIONS
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+	
+	public Account getAccount() {
+		return this.account;
+	}
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+	
+	public void setDetails(String details) {
+		this.details = details;
+	}
+}
+public class PaymentList {
+    private int numPayments;
+    private Payment[] paymentArray;
+
+    public PaymentList() {
+        this.numPayments = 0;
+        this.paymentArray = new Payment[7];
+    }
+
+    public void add(Payment payment) {
+        
+        for (int i = 0; i < numPayments; ++i) {
+            Payment curr = paymentArray[i];
+            if (payment.getId().equals(curr.getId())) {  
+                return;
+            }
+        }
+        
+		if (this.numPayments >= paymentArray.length) {
+			Payment[] newPaymentArray = new Payment[paymentArray.length * 2];
+
+			// Copy old array into new/bigger array
+			for (int i = 0; i < paymentArray.length; ++i) {
+				newPaymentArray[i] = paymentArray[i];
+			}
+
+			paymentArray = newPaymentArray;
+		}
+        
+        
+        if (numPayments == 0) {
+            paymentArray[0] = payment;
+            ++numPayments;
+            return;
+        }
+        
+        for (int i = numPayments - 1; i >= 0; --i) {
+            if (payment.getId().compareTo(paymentArray[i].getId()) >= 0) { 
+                paymentArray[i + 1] = payment;
+                ++numPayments;
+                return;
+            } else {
+                paymentArray[i + 1] = paymentArray[i];
+                if (i == 0) {
+                    paymentArray[0] = payment;
+                    ++numPayments;
+                    return;
+                }
+            }
+        }
+    }
+
+   public int size() {
+        return numPayments;
+    }
+
+    public Payment get(int index) {
+        return paymentArray[index];
+    }
+    
+    public Payment[] getPayments() {
+    	return this.paymentArray;
+    }
+}
+public class Phone {
+	private String phoneNumber;
+	
+	public Phone(String number) {
+		this.phoneNumber = number;
+	}
+	
+	public String getPhoneNumber() {
+		return this.phoneNumber;
+	} 
+	
+}
+public class Price {
+	private double usd;
+	
+	public Price(double n){
+		this.usd = n;
+	}
+	
+	public double getUSD(){
+		return this.usd;
+	}
+	
+	public void setPrice(float newUsd) {
+		this.usd = newUsd;
+	}
+		
+}
+import java.util.ArrayList;
+
+public class Product {
+	private static int count = 0;
+	
+	private String id;
+	private String name;
+	private Supplier supplier;
+	
+	private ArrayList<LineItem> lineitems;
+	
+	public Product(String name, Supplier supplier) {
+		this.id = String.valueOf(++count);
+		this.name = name;
+		this.supplier = supplier;
+		
+		this.lineitems = new ArrayList<LineItem>();
+	}
+	
+	// GETTERS
+	public String getId() {
+		return this.id;
+	}
+	
+	public String getName() {
+		return this.name;
+	}
+	
+	public Supplier getSupplier() {
+		return this.supplier;
+	}
+	
+	
+			
+	// SETTERS
+	public void setName(String newName) {
+		this.name = newName;
+	}
+	
+	public void setSupplier(Supplier newSupplier) {
+		this.supplier = newSupplier;
+	}
+	
+	
+	
+	// ASSOCIATIONS
+	public ArrayList<LineItem> getLineItems(){
+		return this.lineitems;
+	}
+	public void addLineItem(LineItem lineitem) {
+		this.lineitems.add(lineitem);
+		
+	}
+	
+}
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
+public class ShoppingCart {
+	private LocalDateTime createdAt;
+	
+	private WebUser webuser;
+//	private HashSet<LineItem> lineitems;
+	private LineItemList lineitems;
+	
+	public ShoppingCart() {
+		this.createdAt = LocalDateTime.now();
+		this.lineitems = new LineItemList();
+	}
+	
+	// GETTERS
+	public LocalDateTime getCreatedAt() {
+		return this.createdAt;
+	}
+
+	//moved to Order
+//	public double getTotal() {
+//		double total = 0.0;
+//		for (LineItem item : lineitems) {
+//			total += item.getQuantity() * item.getPrice().getUSD();
+//		}
+//		return total;
+//	}
+	
+	// SETTERS
+	
+	// ASSOCIATIONS
+	public WebUser getWebUser() {
+		return this.webuser;
+	}
+	public void setWebUser(WebUser webuser) {
+		this.webuser = webuser;
+	}
+	
+	public void addLineItem(LineItem lineitem) {
+		lineitem.decrementQuantity();
+		lineitems.add(lineitem);
+	}
+	public LineItemList getLineItems() {
+		return lineitems;
+	}
+}
+
+public class Supplier {
+	private String name;
+	
+	public Supplier(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return this.name;
+	}
+	
+	public void setName(String newName) {
+		this.name = newName;
+	}
+}
+public enum UserState {
+	NEW, ACTIVE, BLOCKED, BANNED
+}
+public class WebUser {
+	private String loginId;
+	private String password;
+	private UserState state;
+	
+	private Customer customer;
+	private ShoppingCart shoppingcart;
+	
+	public WebUser(String loginId, String password, Customer customer) {
+		this.loginId = loginId;
+		this.password = password;
+		this.state = UserState.NEW;
+		this.customer = customer;
+		this.shoppingcart = customer.getAccount().getShoppingCart();
+	}
+	
+	// GETTERS
+	public String getLoginId() {
+		return this.loginId;
+	}
+	
+	public UserState getUserState() {
+		return this.state;
+	}
+	
+	// SETTERS
+	public void setLoginId(String newId) {
+		this.loginId = newId;
+	}
+	
+	public void setPassword(String newPass) {
+		this.password = newPass;
+	}
+	
+	public void setUserState(UserState newState) {
+		this.state = newState;
+	}
+	
+	
+	// ASSOCIATIONS
+	public Customer getCustomer() {
+		return this.customer;
+	}
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public ShoppingCart getShoppingCart() {
+		return this.shoppingcart;
+	}
+	public void setShoppingCart(ShoppingCart cart) {
+		this.shoppingcart = cart;
+	}
+	
+}

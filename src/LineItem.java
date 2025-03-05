@@ -32,6 +32,8 @@ public class LineItem {
 	public void decrementQuantity() {
 		if (this.quantity > 0) {
 			this.quantity--;
+		} else {
+			System.out.println("Quantity is 0, cannot decrement any more!");
 		}
 	}
 	

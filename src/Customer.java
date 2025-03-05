@@ -61,7 +61,9 @@ public class Customer {
 	public void setWebuser(WebUser webuser) {
 		this.webuser = webuser;
 	}
-
+	public WebUser getWebuser() {
+		return this.webuser;
+	}
 	public Account getAccount() {
 		return this.account;
 	}
