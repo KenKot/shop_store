@@ -211,6 +211,8 @@ public class LineItem {
 	public void decrementQuantity() {
 		if (this.quantity > 0) {
 			this.quantity--;
+		} else {
+			System.out.println("Quantity is 0, cannot decrement any more!");
 		}
 	}
 	
@@ -235,9 +237,15 @@ public class LineItem {
 	public void setShoppingCart(ShoppingCart shoppingcart) {
 		this.shoppingcart = shoppingcart;
 	}
+	public ShoppingCart getShoppingCart() {
+		return this.shoppingcart;
+	}
 	
 	public void setOrder(Order order) {
 		this.order = order;
+	}
+	public Order getOrder() {
+		return this.order;
 	}
 }
 public class LineItemList {
@@ -437,8 +445,57 @@ public class Main {
 		
 		
 		System.out.println("\n\n------------------------------------------------------------");
-		System.out.println("RUNNING BLACK BOX TESTS:");
+		System.out.println("RUNNING WHITE BOX TESTING ON THE CLASS LineItem");
 		System.out.println("------------------------------------------------------------");
+		LineItem li1 = new LineItem(3, new Price(400));
+		LineItem li2 = new LineItem(4, new Price(800));
+		LineItem li3 = new LineItem(2, new Price(1400));
+		Product Soda = new Product("Dr. Pepper", new Supplier("Pepsico"));
+		li1.setProduct(Soda);
+		Product Cheese = new Product("Cheddar", new Supplier("Kraft"));
+		li1.setProduct(Cheese);
+		
+		li1.setShoppingCart(s2);
+		li1.setOrder(o2);
+		
+//		LineItemList lil = new LineItemList();
+//		lil.add(Soda);
+//		lil.add(Cheese)
+//		
+//		s1.addLineItem(Soda);
+//		s1.addLineItem(Cheese);
+		
+		
+		
+		tester("ID's are unique & set in constructor", li1.getId().equals("5") && li2.getId().equals("6") && li3.getId().equals("7"));
+
+		tester("Line Item has a number quantity", li1.getQuantity() >= 0);
+
+		tester("Line Item has a price (which also has a usd value)", li1.getPrice() instanceof Price && li1.getPrice().getUSD() >= 0);
+		
+		
+		int initCount = li3.getQuantity();
+		li3.decrementQuantity();
+		tester("line item can decrement in quanitity", initCount - 1 ==  li3.getQuantity());
+		
+		
+		li3.decrementQuantity();
+		li3.decrementQuantity();
+		li3.decrementQuantity();
+		li3.decrementQuantity();
+		li3.decrementQuantity();
+		tester("line item can't decrement past 0", li3.getQuantity() == 0);
+
+		li3.setQuantity(111);
+		tester("Can set quantity", li3.getQuantity() == 111);
+		
+		li3.setPrice(new Price(999));
+		tester("can set price", li3.getPrice().getUSD() == 999);
+		
+		tester("Line item associated with a product", li1.getProduct() instanceof Product);
+		tester("Line item associated with a shopping cart", li1.getShoppingCart() instanceof ShoppingCart);
+		tester("Line item associated with a order", li1.getOrder() instanceof Order);
+//		tester("", );
 	}
 }
 import java.time.LocalDateTime;

@@ -7,18 +7,15 @@ public class Account {
 	private static int count = 0;
 	
 	private String id;
-	private Address billing_address; // perhaps make setter, not use constructor
+	private Address billing_address; 
 	private boolean is_closed;
 	private LocalDateTime open;
 	private LocalDateTime closed;
 	
-//	private Customer customer;
 	private ShoppingCart shoppingcart;
 	
 	private PaymentList payments;
 	private OrderList orders;
-//	private ArrayList<Payment> payments;
-//	private HashSet<Order> orders;
 	
 	
 	public Account(Address address) {
@@ -32,8 +29,6 @@ public class Account {
 		
 		this.payments = new PaymentList();
 		this.orders = new OrderList();
-//		this.payments = new ArrayList<Payment>();
-//		this.orders = new HashSet<Order>();
 		
 	}
 	
@@ -43,23 +38,16 @@ public class Account {
 		return this.id;
 	}
 	
-//	public HashSet<Order> getOrders(){ 
 	public OrderList getOrders(){ 
 		return this.orders;
 	}
 	// SETTERS
 	
 	// ASSOCIATIONS
-//	public void setCustomer(Customer customer) {
-//		this.customer = customer;
-//	}
 
 	public ShoppingCart getShoppingCart() {
 		return this.shoppingcart;
 	}
-//	public void setShoppingCart(ShoppingCart shoppingcart) {
-//		this.shoppingcart = shoppingcart;
-//	}
 	
 	public void addPayment(Payment payment) {
 		payments.add(payment);
@@ -69,10 +57,4 @@ public class Account {
 	public void addOrder(Order order) {
 		orders.add(order);
 	}
-//	public HashSet<Order> getOrders() {
-//		return this.orders;
-//	}
-//	public void createShoppingCart(WebUser webuser) {
-//		this.shoppingcart = new ShoppingCart(webuser);
-//	}
 }

@@ -171,7 +171,7 @@ public class Main {
 		li3.decrementQuantity();
 		li3.decrementQuantity();
 		li3.decrementQuantity();
-		tester("line item can't decrement past 0", li3.getQuantity() >= 0);
+		tester("line item can't decrement past 0", li3.getQuantity() == 0);
 
 		li3.setQuantity(111);
 		tester("Can set quantity", li3.getQuantity() == 111);

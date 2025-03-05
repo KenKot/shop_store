@@ -35,12 +35,10 @@ public class Customer {
 		return this.email;
 	}
 
-//	public HashSet<Order> getOrders() {
 	public OrderList getOrders() {
 		if (account != null) {
 			return account.getOrders();
 		}
-//		return new HashSet<>();
 		return new OrderList();
 	}
 
@@ -67,9 +65,6 @@ public class Customer {
 	public Account getAccount() {
 		return this.account;
 	}
-//	public void setAccount(Account newAccount) {
-//		this.account = newAccount;
-//	}
 
 	public void createAccount(String street, String city, String state, String zip) {
 		Address address = new Address(street, city, state, zip);

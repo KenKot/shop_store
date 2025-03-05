@@ -15,11 +15,7 @@ public class Order {
 	private PaymentList payments;
 	private LineItemList lineitems;
 	
-//	private HashSet<Payment> payments;
-//	private HashSet<LineItem> lineitems;
 	
-	
-	// Programmer's Choice
 	private double balanceLeft;
 	
 	
@@ -42,15 +38,12 @@ public class Order {
 		}
 		
 		
-//		this.payments = new HashSet<Payment>();
 		this.payments = new PaymentList();
 		
-//		this.shipped = shipped; // to be updated later
 		this.status = OrderStatus.NEW; // to be updated later
 	}
 	
 	// GETTERS
-		//programmers choice
 	public boolean isPaid() {
 		return this.balanceLeft <= 0;
 	}
@@ -107,9 +100,6 @@ public class Order {
 		this.total = newTotal;
 	}
 	// ASSOCIATIONS
-//	public void setAccount(Account account) {
-//		this.account = account;
-//	}
 	
 	public void addPayment(Payment payment) {
 		//prevent additional payments
@@ -124,7 +114,6 @@ public class Order {
 		}
 	}
 	
-//	public HashSet<Payment> getPayments(){
 	public PaymentList getPayments(){
 		return this.payments;
 	}
@@ -133,7 +122,6 @@ public class Order {
 	public void addLineItem(LineItem lineitem) {
 		this.lineitems.add(lineitem);
 	}
-//	public HashSet<LineItem> getLineItems() {
 	public LineItemList getLineItems() {
 		return this.lineitems;
 	}

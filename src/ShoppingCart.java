@@ -6,7 +6,6 @@ public class ShoppingCart {
 	private LocalDateTime createdAt;
 	
 	private WebUser webuser;
-//	private HashSet<LineItem> lineitems;
 	private LineItemList lineitems;
 	
 	public ShoppingCart() {
@@ -19,14 +18,6 @@ public class ShoppingCart {
 		return this.createdAt;
 	}
 
-	//moved to Order
-//	public double getTotal() {
-//		double total = 0.0;
-//		for (LineItem item : lineitems) {
-//			total += item.getQuantity() * item.getPrice().getUSD();
-//		}
-//		return total;
-//	}
 	
 	// SETTERS
 	
