@@ -49,6 +49,38 @@ public class LineItemList {
             }
         }
     }
+
+	public void remove(LineItem li) {
+		String id = li.getId();
+		boolean shiftElements = false;
+		int lineItemCount = numLineItems; 
+
+		if (lineItemCount == 0)
+			return;
+
+		if (lineItemCount == 1) {
+			if (id.equals(lineItemArray[0].getId())) {
+				lineItemArray[0] = null;
+				--numLineItems;
+				return;
+			}
+		}
+
+		for (int i = 0; i < lineItemCount - 1; ++i) {
+			if (id.equals(lineItemArray[i].getId())) {
+				shiftElements = true;
+			}
+
+			if (shiftElements) {
+				lineItemArray[i] = lineItemArray[i + 1];
+			}
+		}
+
+		if (shiftElements || (id.equals(lineItemArray[lineItemCount - 1].getId()))) {
+			lineItemArray[lineItemCount - 1] = null;
+			--numLineItems;
+		}
+	}
    public int size() {
         return numLineItems;
     }

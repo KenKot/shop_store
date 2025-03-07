@@ -48,6 +48,7 @@ public class Main {
 		GPU.addLineItem(GPUItem);
 		
 
+
 		Product toothBrush = new Product("Brusher9000", new Supplier("Colgate"));
 		LineItem toothBrushItem = new LineItem(2, new Price(10.0));
 		toothBrushItem.setProduct(toothBrush);
@@ -55,7 +56,20 @@ public class Main {
 
 		ShoppingCart s1 = c1.getAccount().getShoppingCart();
 		s1.addLineItem(GPUItem);
+		
+		
+		s1.addLineItem(GPUItem);
+		tester("Line item successfully added to cart", s1.getLineItems().size() == 1);
+
+		s1.removeLineItem(GPUItem); 
+		tester("Line item successfully removed from cart", s1.getLineItems().size() == 0);
+		
+		
 		s1.addLineItem(toothBrushItem);
+		
+		
+		
+		
 		
 		Order o1 = new Order(c1.getAddress(), s1.getLineItems());
 		c1Account.addOrder(o1);
@@ -77,7 +91,6 @@ public class Main {
 		
 		
 		
-//		ShoppingCart s2 = new ShoppingCart();
 		LineItem GPUItem2 = new LineItem(11, new Price(400.0));
 		GPUItem2.setProduct(GPU);
 		s1.addLineItem(GPUItem2);
@@ -114,6 +127,13 @@ public class Main {
 		
 		
 		
+		if (o1.getStatus() == OrderStatus.PAID) {
+			s1.clear();
+			o1.setStatus(OrderStatus.SHIPPED);
+		}
+		
+		
+		tester("Paying order clears shopping cart", s1.getLineItems().size() == 0);
 		
 		
 		
@@ -145,15 +165,6 @@ public class Main {
 		li1.setShoppingCart(s2);
 		li1.setOrder(o2);
 		
-//		LineItemList lil = new LineItemList();
-//		lil.add(Soda);
-//		lil.add(Cheese)
-//		
-//		s1.addLineItem(Soda);
-//		s1.addLineItem(Cheese);
-		
-		
-		
 		tester("ID's are unique & set in constructor", li1.getId().equals("5") && li2.getId().equals("6") && li3.getId().equals("7"));
 
 		tester("Line Item has a number quantity", li1.getQuantity() >= 0);
@@ -182,6 +193,5 @@ public class Main {
 		tester("Line item associated with a product", li1.getProduct() instanceof Product);
 		tester("Line item associated with a shopping cart", li1.getShoppingCart() instanceof ShoppingCart);
 		tester("Line item associated with a order", li1.getOrder() instanceof Order);
-//		tester("", );
 	}
 }

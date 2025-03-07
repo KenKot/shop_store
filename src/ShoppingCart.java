@@ -20,6 +20,9 @@ public class ShoppingCart {
 
 	
 	// SETTERS
+	public void clear() {
+		this.lineitems = new LineItemList();
+	}
 	
 	// ASSOCIATIONS
 	public WebUser getWebUser() {
@@ -33,6 +36,10 @@ public class ShoppingCart {
 		lineitem.decrementQuantity();
 		lineitems.add(lineitem);
 	}
+	public void removeLineItem(LineItem lineitem) {
+	    lineitems.remove(lineitem);
+	}
+
 	public LineItemList getLineItems() {
 		return lineitems;
 	}
